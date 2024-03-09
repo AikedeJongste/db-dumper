@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4.6.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE }}
+          images: ${{ env.IMAGE }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.2.0
