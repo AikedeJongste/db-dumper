@@ -26,9 +26,15 @@ echo "Current PG_DUMP version:"
 echo "Target host is: $PGHOST"
 echo "Target user is: $PGUSER"
 echo "Target pass is: $PGPASS"
+echo "Target list is: $PGLIST"
 
 DATE=`date +%d`
-LIST=$(psql -l | grep UTF8 | awk '{ print $1}' | grep -vE '^-|^List|^Name|template[0|1]')
+
+if [[ -v $PGLIST ]]; then
+  LIST=$(psql -l | grep UTF8 | awk '{ print $1}' | grep -vE '^-|^List|^Name|azure_sys|azure_maintenance|template[0|1]')
+else
+  LIST=$PGLIST
+fi
 
 for d in $LIST
 do

@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  dbd:
+    build: .
+    container_name: dbdump
+    restart: unless-stopped
+    volumes:
+      - /var/backups:/mnt/target
+    environment:
+      PGHOST: $PGHOST
+      PGUSER: $PGUSER
+      PGPASSWORD: $PGPASSWORD
+      MONITOR_URL: $MONITOR_URL
+      SCHEDULE: $SCHEDULE
+      PGLIST: $PGLIST
+
