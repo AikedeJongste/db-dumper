@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  dbd:
+    image: "dbd:dev"
+    container_name: dbd
+    restart: unless-stopped
+    volumes:
+      - ./dumps:/mnt/target
+    environment:
+      PGHOST: $PGHOST
+      PGUSER: $PGUSER
+      PGPASSWORD: $PGPASSWORD
+      MONITOR_URL: $MONITOR_URL
+      SCHEDULE: "* * * * *"
+  db:
+    container_name: db
+    image: postgres:$PGVERSION
+    restart: always
+    environment:
+      PGPASSWORD: $PGPASSWORD
