@@ -1,7 +1,11 @@
 #!/bin/bash
 
-echo "Sending start signal to monitoring."
-curl -s $MONITOR_URL?state=run
+if [ -z ${MONITORURL+x}  ]; then
+  echo "Please configure monitor URL."
+else
+  echo "Sending start signal to monitoring."
+  curl -s $MONITORURL?state=run
+fi
 
 # Turn on debugging output
 set -x
@@ -15,20 +19,27 @@ cleanup() {
 trap cleanup EXIT
 
 # Destination path
-DESTINATION="/mnt/target"
+if [ -z ${DESTINATION+x}  ]; then
+  echo "Setting DESTINATION to /mnt/target."
+  DESTINATION="/mnt/target"
+else
+  echo "Setting DESTINATION to $DESTINATION ."
+  DESTINATION="$DESTINATION"
+fi
 
 echo "Current storage usage:"
-du -hs $DEST_PATH
+du -hs $DESTINATION
 
 echo "Current PG_DUMP version:"
 /usr/bin/pg_dump --version
 
+DATE=`date +%d`
+echo "Target date is: $DATE"
 echo "Target host is: $PGHOST"
 echo "Target user is: $PGUSER"
 echo "Target pass is: $PGPASSWORD"
 echo "Target list is: $PGLIST"
 
-DATE=`date +%d`
 
 if [ -z ${PGLIST+x}  ]; then
   LIST=$(psql -l | grep UTF8 | awk '{ print $1}' | grep -vE '^-|^List|^Name|postgres|azure_sys|azure_maintenance|template[0|1]')
@@ -44,6 +55,11 @@ done
 
 
 # Notify monitor of completion
-curl -s "$MONITOR_URL?state=complete&msg=Success!"
+if [ -z ${MONITORURL+x}  ]; then
+  echo "Please configure monitor URL."
+else
+  echo "Sending start signal to monitoring."
+  curl -s "$MONITORURL?state=complete&msg=Success!"
+fi
 
 

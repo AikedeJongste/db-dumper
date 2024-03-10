@@ -11,7 +11,7 @@ services:
       PGHOST: $PGHOST
       PGUSER: $PGUSER
       PGPASSWORD: $PGPASSWORD
-      MONITOR_URL: $MONITOR_URL
+      MONITORURL: $MONITORURL
       SCHEDULE: "* * * * *"
   db:
     container_name: db
