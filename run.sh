@@ -42,7 +42,7 @@ echo "Target list is: $PGLIST"
 
 
 if [ -z ${PGLIST+x}  ]; then
-  LIST=$(psql -l | grep UTF8 | awk '{ print $1}' | grep -vE '^-|^List|^Name|postgres|azure_sys|azure_maintenance|template[0|1]')
+  LIST=$(psql -l | grep UTF8 | awk '{ print $1}' | grep -vE '^-|^List|^Name|postgres|azure_sys|azure_maintenance|_dodb|template[0|1]')
 else
   LIST=$PGLIST
 fi
