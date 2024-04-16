@@ -3,9 +3,11 @@ set -x
 
 echo "Adding schedule to CRONTAB."
 
-if [[ -v $SCHEDULE ]]; then
+if [[ -z $SCHEDULE ]]; then
+  echo "Setting default schedule."
   echo "0 4 * * * /run.sh > /dev/stdout 2>&1" > /etc/crontab
 else
+  echo "Setting custom schedule."
   echo "$SCHEDULE /run.sh > /dev/stdout 2>&1" > /etc/crontab
 fi
 
